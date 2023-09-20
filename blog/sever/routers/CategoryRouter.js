@@ -20,7 +20,7 @@ router.get("/list",async(req,res)=>{
         })
     }else{
         res.send({
-            code:800,
+            code:303,
             msg:"查询失败"
         })
     }
@@ -40,13 +40,27 @@ router.delete("/delete",async (req,res)=>{
         })
     }else{
         res.send({
-            code:700,
+            code:302,
             msg:"删除失败"
         })
     }
 })
 //修改接口
 router.put("/update",async (req,res)=>{
+
+    let token = req.headers.token;
+    console.log(token);
+
+    let admin_token_sql = "SELECT * FROM `admin` WHERE `token` = ?"
+    let adminResult = await db.async.all(admin_token_sql,[token])
+    if(adminResult.err != null || adminResult.rows.length == 0){
+        res.send({
+            code:403,
+            msg:"请先登录"
+        })
+        return;
+    }
+
 
     let {id,name} = req.body
     const update_sql = "UPDATE `category` SET `name` = ? WHERE `id` = ?"
@@ -59,7 +73,7 @@ router.put("/update",async (req,res)=>{
         })
     }else{
         res.send({
-            code:600,
+            code:304,
             msg:"修改失败"
         })
     }
@@ -79,7 +93,7 @@ router.post("/add",async (req,res)=>{
         })
     }else{
         res.send({
-            code:600,
+            code:301,
             msg:"添加失败"
         })
     }
