@@ -73,7 +73,7 @@ router.get("/search",async (req,res)=>{
 
 
 //删除接口 /blog/delete?id=xxx
-router.delete("/delete",async (req,res)=>{
+router.delete("/_token/delete",async (req,res)=>{
 
     let id = req.query.id
     const delete_sql = "DELETE from `blog` WHERE `id` = ?"
@@ -95,7 +95,7 @@ router.delete("/delete",async (req,res)=>{
 
 
 //修改博客
-router.put("/update",async (req,res)=>{
+router.put("/_token/update",async (req,res)=>{
     let {id,title,categoryId,content} = req.body;
 
     const update_sql = "UPDATE `blog` SET `title` = ?, `content` = ?,`category_id` =? WHERE `id` = ?"
@@ -117,7 +117,7 @@ router.put("/update",async (req,res)=>{
 })
 
 //添加博客
-router.post("/add",async (req,res)=>{
+router.post("/_token/add",async (req,res)=>{
     let {title,categoryId,content} = req.body;
     let id = genid.NextId();
     let create_time = new Date().getTime();//获取时间戳，单位ms
