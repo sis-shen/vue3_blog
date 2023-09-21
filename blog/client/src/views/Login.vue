@@ -22,7 +22,7 @@
 <script setup>
 
 import { ref, reactive, inject } from 'vue'
-import { AdminStore } from '../stores/UserStore';
+import { AdminStore } from '../stores/AdminStore';
 
 import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()

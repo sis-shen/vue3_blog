@@ -1,7 +1,7 @@
 <template>
     <div class="main-panel">
         <div class="menus">
-            <div v-for="(menu, index) in menus" @click="toPage">
+            <div v-for="(menu, index) in menus" @click="toPage(menu)">
                 {{ menu.name }}
             </div>
         </div>
@@ -14,7 +14,8 @@
 </template>
 
 <script setup>
-import { AdminStore } from '../../stores/UserStore';
+//常用==========
+import { AdminStore } from '../../stores/AdminStore';
 import { ref, reactive, inject } from 'vue'
 
 import { useRouter, useRoute } from 'vue-router'
@@ -25,6 +26,7 @@ const message = inject("message")
 const axios = inject("axios")
 
 const adminStore = AdminStore()
+//=====================
 
 let menus = [
     { name: "文章管理", href: "/dashboard/article" },
@@ -32,7 +34,12 @@ let menus = [
     { name: "退出", href: "logout" },
 ];
 
-const toPage = () => {
+const toPage = (menu) => {
+    if(menu.href == "logout"){
+        router.push("/login")
+    }else{
+        router.push(menu.href)
+    }
 
 }
 
