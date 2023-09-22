@@ -25,14 +25,47 @@ import { AdminStore } from '../stores/AdminStore';
 import { ref, reactive, inject,onBeforeUnmount ,shallowRef,onMounted} from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
 
+const server_url = inject("server_url")
+
 // 编辑器实例，必须用 shallowRef，重要！
 const editorRef = shallowRef();
-const toolbarConfig = {};
+const toolbarConfig = { excludeKeys:["uploadVideo"] };
 const editorConfig = { placeholder: '请输入内容...' };
+editorConfig.MENU_CONF = {}
+editorConfig.MENU_CONF['uploadImage'] = {
+    base64LimitSize: 10 * 1024, // 10kb 保存在文本中
+    server: server_url + '/upload/rich_editor_upload',
+}
+
+editorConfig.MENU_CONF['insertImage'] = {
+    parseImageSrc:(src) =>{
+        if(src.indexOf("http") != 0 ){
+            return `${server_url}${src}`
+        }
+        return src
+    }
+}
 
 const mode = ref("defualt")
 
 const valueHtml = ref("")
+
+const props = defineProps({
+    modelValue:{
+        type:String,
+        default:""
+    }
+})
+
+const emit = defineEmits(["update:model-value"])
+let initFinished = false
+
+onMounted(()=>{
+    setTimeout(()=>{
+        valueHtml.value = props.modelValue;
+        initFinished = true;
+    },10);
+});
 
 // 组件销毁时，也及时销毁编辑器，重要！
 onBeforeUnmount(() => {
@@ -48,7 +81,10 @@ const handleCreated = (editor) => {
     editorRef.value = editor; // 记录 editor 实例，重要！
 };
 const handleChange = (editor) => {
-    console.log('change:', editor.getHtml());
+    // console.log('change:', editor.getHtml());
+    if(initFinished){
+        emit("update:model-value",valueHtml.value)
+    }
 };
 
 </script>
