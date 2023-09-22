@@ -8,7 +8,7 @@
                         <n-space style="align-items: center;">
                             <div>发布时间:{{ blog.create_time }}</div>
                             <n-button @click="toUpdate(blog)">修改</n-button>
-                            <n-button>删除</n-button>
+                            <n-button @click="toDelete(blog)">删除</n-button>
                         </n-space>
                     </template>
                 </n-card>
@@ -71,6 +71,8 @@ const route = useRoute()
 
 const message = inject("message")
 const axios = inject("axios")
+const dialog = inject("dialog")
+
 
 const adminStore = AdminStore()
 
@@ -89,7 +91,7 @@ const updateArticle = reactive({
 
 const categoryOptions = ref([])
 const blogListInfo = ref([])
-const tabValue =ref("list")
+const tabValue = ref("list")
 
 const pageInfo = reactive({
     page: 1,
@@ -145,9 +147,9 @@ const toPage = async (pageNum) => {
     loadBlogs()
 }
 
-const toUpdate = async (blog) =>{
+const toUpdate = async (blog) => {
     tabValue.value = "updateTab"
-    let res = await axios.get("/blog/detail?id="+ blog.id )
+    let res = await axios.get("/blog/detail?id=" + blog.id)
     updateArticle.id = blog.id
     updateArticle.title = res.data.rows[0].title
     updateArticle.content = res.data.rows[0].content
@@ -160,12 +162,35 @@ const update = async () => {
     if (res.data.code == 200) {
         message.info(res.data.msg)
         loadBlogs(),
-        tabValue.value = "list"
+            tabValue.value = "list"
     } else {
         message.error(res.data.msg)
     }
 }
 
+const toDelete = async (blog) => {
+
+    dialog.warning({
+        title: '警告',
+        content: '是否要删除',
+        positiveText: '确定',
+        negativeText: '取消',
+        onPositiveClick: async () => {
+            message.success('确定')
+            let res = await axios.delete("/blog/_token/delete?id=" + blog.id)
+            if (res.data.code == 200) {
+                message.info(res.data.msg)
+                loadBlogs()
+            } else {
+                message.error(res.data.msg)
+            }
+
+        },
+        onNegativeClick: () => {
+
+        }
+    })
+}
 
 
 </script>
