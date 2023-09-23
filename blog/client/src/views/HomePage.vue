@@ -1,18 +1,22 @@
 <template>
     <div class="container">
         <div class="nav">
-            <div @click="homePage">首页</div>
-            <n-popselect @update:value="searchByCategory" v-model:value="selectedCategory" :options="categoryOptions" trigger="click">
+            <div @click="homePage"><n-button  color="rgba(255, 192, 203, 0.9)">首页</n-button></div>
+            <n-button  strong secondary type="info"  @click="dashboard" style="margin-right: 10px;">后台</n-button>
+
+            <n-popselect @update:value="searchByCategory" v-model:value="selectedCategory" :options="categoryOptions"
+                trigger="click">
                 <div>分类: <span>{{ categoryName }}</span></div>
             </n-popselect>
-            <div @click="dashboard">后台</div>
+            
+    
         </div>
         <n-divider />
 
         <n-space style="margin-bottom: 20px;">
-            <n-input v-model:value="pageInfo.keyword" :style="{width:'500px'}" placeholder="请输入关键字"  />
+            <n-input v-model:value="pageInfo.keyword" :style="{ width: '500px' }" placeholder="请输入关键字" />
             <n-button type="primary" ghost @click="loadBlogs(0)" @keydown.enter="loadBlogs(0)">搜索</n-button>
-        </n-space >
+        </n-space>
 
 
         <div v-for="(blog, index) in blogListInfo" style="margin-bottom: 15px;cursor:pointer;width: 60%;">
@@ -51,8 +55,8 @@ const selectedCategory = ref(null)
 const categoryOptions = ref([])
 const blogListInfo = ref([])
 const nullCategory = {
-    label:"无分类",
-    value:null
+    label: "无分类",
+    value: null
 }
 
 
@@ -62,7 +66,7 @@ const pageInfo = reactive({
     pageCount: 0,
     count: 0,
     keyword: "",
-    categoryId:0
+    categoryId: 0
 })
 
 
@@ -71,8 +75,8 @@ onMounted(() => {
     loadBlogs()
 })
 
-const loadBlogs = async ( page = 0) => {
-    if(page!=0){
+const loadBlogs = async (page = 0) => {
+    if (page != 0) {
         pageInfo.page = page;
     }
     let res = await axios.get(`/blog/search?keyword=${pageInfo.keyword}&page=${pageInfo.page}&pageSize=${pageInfo.pageSize}&categoryId=${pageInfo.categoryId}`)
@@ -104,14 +108,14 @@ const loadCategorys = async () => {
     categoryOptions.value.push(nullCategory)
 }
 
-const searchByCategory = (categoryId)=>{
-    pageInfo.categoryId =categoryId;
+const searchByCategory = (categoryId) => {
+    pageInfo.categoryId = categoryId;
     loadBlogs()
 
 }
 
-const toDetail = (blog) =>{
-    router.push({path:"/detail",query:{id:blog.id}})
+const toDetail = (blog) => {
+    router.push({ path: "/detail", query: { id: blog.id } })
 }
 
 const homePage = () => {
@@ -141,7 +145,7 @@ const dashboard = () => {
         cursor: pointer;
         margin-right: 15px;
 
-        &:hover {
+        button:hover {
             color: #f60;
         }
 
@@ -158,7 +162,7 @@ const dashboard = () => {
     color: #64676a;
 }
 
-.card{
+.card {
     background: linear-gradient(to bottom right, rgb(255, 255, 255), rgba(255, 192, 203, 0.759));
 }
 </style>

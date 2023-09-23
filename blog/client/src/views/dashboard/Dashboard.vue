@@ -16,7 +16,7 @@
 <script setup>
 //常用==========
 import { AdminStore } from '../../stores/AdminStore';
-import { ref, reactive, inject } from 'vue'
+import { ref, reactive, inject, onMounted } from 'vue'
 
 import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
@@ -27,6 +27,10 @@ const axios = inject("axios")
 
 const adminStore = AdminStore()
 //=====================
+
+onMounted(()=>{
+    router.push("/dashboard/article")
+})
 
 let menus = [
     { name: "文章管理", href: "/dashboard/article" },

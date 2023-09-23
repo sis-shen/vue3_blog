@@ -1,4 +1,8 @@
 <template>
+    <div class="nav">
+
+        <div @click="homePage"><n-button  color="rgba(255, 192, 203, 0.9)">首页</n-button></div>
+    </div>
     <div class="login-panel">
         <n-card title="管理后台登录">
             <n-form :rules="rules" :model="admin">
@@ -76,6 +80,9 @@ const login = async () => {
     console.log(result);
 }
 
+const homePage = () => {
+    router.push("/")
+}
 
 
 </script>
@@ -86,6 +93,12 @@ const login = async () => {
     margin: 0 auto;
     margin-top: 130px;
 
+}
+
+.nav{
+    width: 1200px;
+    margin: 0 auto;
+    margin-top: 20px;
 }
 </style>
 
