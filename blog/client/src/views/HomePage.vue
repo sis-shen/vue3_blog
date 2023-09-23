@@ -3,20 +3,20 @@
         <div class="nav">
             <div @click="homePage">首页</div>
             <n-popselect @update:value="searchByCategory" v-model:value="selectedCategory" :options="categoryOptions" trigger="click">
-                <div>分类:><span>{{ categoryName }}</span></div>
+                <div>分类: <span>{{ categoryName }}</span></div>
             </n-popselect>
             <div @click="dashboard">后台</div>
         </div>
         <n-divider />
 
-        <n-space>
+        <n-space style="margin-bottom: 20px;">
             <n-input v-model:value="pageInfo.keyword" :style="{width:'500px'}" placeholder="请输入关键字"  />
             <n-button type="primary" ghost @click="loadBlogs(0)" @keydown.enter="loadBlogs(0)">搜索</n-button>
-        </n-space>
+        </n-space >
 
 
-        <div v-for="(blog, index) in blogListInfo" style="margin-bottom: 15px;cursor:pointer">
-            <n-card :title="blog.title" @click="toDetail(blog)">
+        <div v-for="(blog, index) in blogListInfo" style="margin-bottom: 15px;cursor:pointer;width: 60%;">
+            <n-card :title="blog.title" @click="toDetail(blog)" class="card">
                 {{ blog.content }}
                 <template #footer>
                     <n-space style="align-items: center;">
@@ -50,11 +50,15 @@ const dialog = inject("dialog")
 const selectedCategory = ref(null)
 const categoryOptions = ref([])
 const blogListInfo = ref([])
+const nullCategory = {
+    label:"无分类",
+    value:null
+}
 
 
 const pageInfo = reactive({
     page: 1,
-    pageSize: 3,
+    pageSize: 5,
     pageCount: 0,
     count: 0,
     keyword: "",
@@ -97,6 +101,7 @@ const loadCategorys = async () => {
             value: item.id,
         }
     })
+    categoryOptions.value.push(nullCategory)
 }
 
 const searchByCategory = (categoryId)=>{
@@ -151,5 +156,9 @@ const dashboard = () => {
     text-align: center;
     line-height: 25px;
     color: #64676a;
+}
+
+.card{
+    background: linear-gradient(to bottom right, rgb(255, 255, 255), rgba(255, 192, 203, 0.759));
 }
 </style>

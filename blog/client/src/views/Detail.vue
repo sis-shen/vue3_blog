@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <n-button @click="back">返回</n-button>
+        <n-button @click="back" class="back">返回</n-button>
 
         <!-- 标题 -->
         <n-h1>{{ blogInfo.title }}</n-h1>
@@ -52,5 +52,9 @@ const back = ()=>{
 .container {
     width: 1200px;
     margin: 0 auto
+}
+
+.back:hover{
+    color: #f60;
 }
 </style>
