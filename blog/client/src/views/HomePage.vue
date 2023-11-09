@@ -39,7 +39,7 @@
         </div>
 
         <div class="side">
-
+            <n-avatar  round :size="100" src="https://picbed.supdriver.top/img/avatar.png" />
         </div>
     </div>
 
@@ -142,9 +142,11 @@ const dashboard = () => {
     display: flex;
 
     .side {
-        width: 300px;
+        width: 200px;
         border-left: #adadad 1px solid;
-        background: linear-gradient(#71b8ff, rgb(54, 154, 254));
+        background: linear-gradient(#1a1a1ac9, rgb(0, 12, 23));
+        text-align: center;
+        padding-top: 40px;
     }
 
 }
